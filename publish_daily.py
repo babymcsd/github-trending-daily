@@ -1,13 +1,9 @@
 #!/usr/bin/env python3
 """
-每日一键发布：从旧系统读取合并版日报 → GitHub
+Daily publish: copy merged report from Obsidian vault to GitHub
 
-旧系统目录: F:\Obsidian\小毛驴\信息简报\Github日报\  (主源，推 Gitee)
-GitHub 仓库: github.com/babymcsd/github-trending-daily    (公开镜像)
-
-用法：
-  python publish_daily.py --date 2026-07-21            # 发布当天
-  python publish_daily.py --date 2026-07-21 --dry-run  # 只复制不推送
+Source: F:/Obsidian/小毛驴/信息简报/Github日报/  (canonical, pushed to Gitee)
+GitHub: github.com/babymcsd/github-trending-daily       (public mirror)
 """
 import sys, subprocess, shutil
 from pathlib import Path
