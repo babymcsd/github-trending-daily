@@ -146,6 +146,17 @@ def enhance_report_v2(report_text: str, evals: dict) -> str:
         else:
             result.append(line)
 
+    # Inject visitor counter after "生成时间" line
+    date_match = re.search(r'生成时间：(\d{4}-\d{2}-\d{2})', "\n".join(result))
+    counter_date = date_match.group(1) if date_match else datetime.now().strftime("%Y-%m-%d")
+    counter_badge = f"> ![Visitors](https://visitor-badge.laobi.icu/badge?page_id=babymcsd.github-trending-daily&date={counter_date})"
+    new_result = []
+    for line in result:
+        new_result.append(line)
+        if line.strip().startswith("> 生成时间"):
+            new_result.append(counter_badge)
+    result = new_result
+
     # Append evaluation summary section before "行动建议" if we found scores
     final = "\n".join(result)
 

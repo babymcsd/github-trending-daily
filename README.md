@@ -42,4 +42,6 @@ daily-reports/
 
 ---
 
+![Visitors](https://visitor-badge.laobi.icu/badge?page_id=babymcsd.github-trending-daily)
+
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
