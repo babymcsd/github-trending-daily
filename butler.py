@@ -149,6 +149,16 @@ def check_has_insight(content: str):
         return False, "缺少本期洞察章节", "inject_insight"
     return True, "OK", None
 
+def check_section_exists(task: Task, section_name: str):
+    """检查是否包含指定章节"""
+    f = task.today_file()
+    if not f.exists():
+        return False, "文件不存在", "generate"
+    content = f.read_text(encoding="utf-8")
+    if section_name not in content:
+        return False, f"缺少「{section_name}」板块", None
+    return True, "OK", None
+
 def check_has_action_items(content: str):
     """检查行动建议"""
     if "行动建议" not in content and "建议" not in content:
@@ -368,8 +378,20 @@ ALL_TASKS = [
             ("已推Gitee", check_pushed_gitee, "push_gitee"),
         ],
     ),
-    make_simple_daily("邯济日报", "邯济日报"),
-    make_simple_daily("轨道日报", "轨道日报"),
+    # 邯济日报已并入轨道日报（2026-07-21）
+    Task(
+        name="轨道日报", slug="轨道日报", freq="daily",
+        dir_path=VAULT / "轨道日报",
+        file_pattern="{date}.md",
+        push_gitee=True, push_github=False,
+        checks=[
+            ("文件存在", check_file_exists, "generate"),
+            ("日期正确", check_date_correct, "fix_date"),
+            ("含邯济铁路板块", lambda t: check_section_exists(t, "邯济铁路"), None),
+            ("含济南轨道交通板块", lambda t: check_section_exists(t, "济南轨道交通"), None),
+            ("已推Gitee", check_pushed_gitee, "push_gitee"),
+        ],
+    ),
 ]
 
 # Clean None checks
